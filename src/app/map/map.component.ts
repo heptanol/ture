@@ -17,21 +17,26 @@ export class MapComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // this.mapCenter();
+    this.setHeight();
+    this.mapCenter();
   }
 
   @HostListener('window:resize')
-  onResize() {
+  setHeight() {
     this.height = window.innerHeight;
   }
 
   mapCenter() {
-    // this.mapsAPILoader.load().then(() => {
-    //   this.latlngBounds = new window['google'].maps.LatLngBounds();
-    //   this.nodes.forEach((node: any) => {
-    //     this.latlngBounds.extend(new window['google'].maps.LatLng(node.latitude, node.longitude));
-    //   });
-    // });
+    this.mapsAPILoader.load().then(() => {
+      this.latlngBounds = new window['google'].maps.LatLngBounds();
+      this.nodes.forEach((node: any) => {
+        this.latlngBounds.extend(new window['google'].maps.LatLng(node.latitude, node.longitude));
+      });
+    });
+  }
+
+  openDetails(node) {
+    console.log(node);
   }
 
 }

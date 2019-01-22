@@ -1,5 +1,5 @@
-<agm-map [style.height.px]="height">
+<agm-map [fitBounds]="latlngBounds || false" [style.height.px]="height">
   <agm-marker-cluster [imagePath]="'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'">
-    <agm-marker *ngFor="let node of nodes" [latitude]="node.latitude" [longitude]="node.longitude"> </agm-marker>
+    <agm-marker *ngFor="let node of nodes" [latitude]="node.latitude" [longitude]="node.longitude" (markerClick)="openDetails(node)"> </agm-marker>
   </agm-marker-cluster>
 </agm-map>
