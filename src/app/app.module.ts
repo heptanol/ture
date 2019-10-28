@@ -1,29 +1,28 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatDialogModule } from '@angular/material';
-import { AgmCoreModule } from '@agm/core';
-import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
+import { RouterModule, Routes } from '@angular/router';
 
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { MapComponent } from './map/map.component';
-import { NodeComponent } from './node/node.component';
+import { MapModule } from './map/map.module';
+
+const appRoutes: Routes = [
+  { path: '', component: AppComponent },
+  { path: 'map', loadChildren: () => import('./map/map.module').then(mod => mod.MapModule) }
+];
 
 @NgModule({
   declarations: [
-    AppComponent,
-    MapComponent,
-    NodeComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    AppRoutingModule,
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyA3TWIbC60GZFx0_E0m2Fb7x7SSLVQ-kuw'
-    }),
-    AgmJsMarkerClustererModule,
+    RouterModule.forRoot(
+      appRoutes,
+      { enableTracing: false } // <-- debugging purposes only
+    ),
+    MapModule
   ],
   providers: [],
   bootstrap: [AppComponent]
