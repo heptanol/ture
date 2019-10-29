@@ -1,30 +1,29 @@
-import {Component, HostListener, Input, OnInit} from '@angular/core';
-import {LatLngBounds, MapsAPILoader} from '@agm/core';
+import { AfterViewInit, Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AgmMap, LatLngBounds, MapsAPILoader } from '@agm/core';
+import { LatLngBoundsLiteral } from '@agm/core/services/google-maps-types';
+
+import { NodeService } from '../shared/node.service';
+import { Node } from '../shared/node.model';
 
 @Component({
   selector: 'app-map-details',
   templateUrl: './map-details.component.html',
   styleUrls: ['./map-details.component.sass']
 })
-export class MapDetailsComponent implements OnInit {
+export class MapDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  @Input() nodeList: any[] = [
-    {latitude: 51.678418, longitude: 7.709007},
-    {latitude: 51.678510, longitude: 7.899007},
-    {latitude: 51.618418, longitude: 7.809007},
-    {latitude: 51.678418, longitude: 7.879007},
-    {latitude: 51.628418, longitude: 7.889007},
-  ];
-  latlngBounds: LatLngBounds;
+  nodeList: Node[] = [];
+  latlngBounds: LatLngBoundsLiteral | LatLngBounds | boolean = false;
   height: any;
+  @ViewChild(AgmMap, { static: false }) agmMap: AgmMap;
 
   constructor(
-    private mapsAPILoader: MapsAPILoader
+    private mapsAPILoader: MapsAPILoader,
+    private nodeService: NodeService
   ) { }
 
   ngOnInit() {
     this.setHeight();
-    this.mapCenter();
   }
 
   @HostListener('window:resize')
@@ -32,12 +31,10 @@ export class MapDetailsComponent implements OnInit {
     this.height = window.innerHeight;
   }
 
-  mapCenter() {
-    this.mapsAPILoader.load().then(() => {
-      this.latlngBounds = new window['google'].maps.LatLngBounds();
-      this.nodeList.forEach((node: any) => {
-        this.latlngBounds.extend(new window['google'].maps.LatLng(node.latitude, node.longitude));
-      });
+  getNodes() {
+    this.nodeService.getNodes().subscribe((nodes: Node[]) => {
+      this.nodeList = nodes;
+      this.adjustMap(nodes);
     });
   }
 
@@ -45,5 +42,18 @@ export class MapDetailsComponent implements OnInit {
     console.log(node);
   }
 
+  adjustMap(nodes: Node[]) {
+    const latlngBounds = new window['google'].maps.LatLngBounds();
+    nodes.forEach((node) => {
+      latlngBounds.extend(new window['google'].maps.LatLng(node.localisation.latitude, node.localisation.longitude));
+    });
+    this.latlngBounds = latlngBounds;
+  }
 
+  ngAfterViewInit() {
+    this.getNodes();
+  }
+
+  ngOnDestroy() {
+  }
 }

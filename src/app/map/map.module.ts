@@ -5,6 +5,9 @@ import {AgmCoreModule} from '@agm/core';
 import {MapComponent} from './map.component';
 import {RouterModule, Routes} from '@angular/router';
 import { MapDetailsComponent } from './map-details/map-details.component';
+import { NodeComponent } from './node/node.component';
+import {NodeService} from './shared/node.service';
+import {HttpClientModule} from '@angular/common/http';
 
 const appRoutes: Routes = [
   { path: '', component: MapComponent,
@@ -17,10 +20,15 @@ const appRoutes: Routes = [
 @NgModule({
   declarations: [
     MapComponent,
-    MapDetailsComponent
+    MapDetailsComponent,
+    NodeComponent
+  ],
+  providers: [
+    NodeService
   ],
   imports: [
     CommonModule,
+    HttpClientModule,
     RouterModule.forChild(
       appRoutes
     ),
