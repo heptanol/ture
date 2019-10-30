@@ -8,6 +8,8 @@ import { MapDetailsComponent } from './map-details/map-details.component';
 import { NodeComponent } from './node/node.component';
 import {NodeService} from './shared/node.service';
 import {HttpClientModule} from '@angular/common/http';
+import {StoreModule} from '@ngrx/store';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 
 const appRoutes: Routes = [
   { path: '', component: MapComponent,
@@ -32,6 +34,8 @@ const appRoutes: Routes = [
     RouterModule.forChild(
       appRoutes
     ),
+    StoreModule.forRoot({}),
+    StoreDevtoolsModule.instrument(),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyA3TWIbC60GZFx0_E0m2Fb7x7SSLVQ-kuw'
     }),
