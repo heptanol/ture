@@ -11,6 +11,6 @@ export class NodeService {
   constructor(private http: HttpClient) { }
 
   getNodes(): Observable<Node[]> {
-    return this.http.get<Node[]>('https://my-json-server.typicode.com/heptanol/json-server/nodes');
+    return this.http.get<Node[]>('https://my-json-server.typicode.com/heptanol/ture-json-server/nodes');
   }
 }

@@ -4,6 +4,8 @@ import { LatLngBoundsLiteral } from '@agm/core/services/google-maps-types';
 
 import { NodeService } from '../shared/node.service';
 import { Node } from '../shared/node.model';
+import {Store} from '@ngrx/store';
+import {GetNodes, NodeActionType} from '../shared/node.action';
 
 @Component({
   selector: 'app-map-details',
@@ -19,7 +21,8 @@ export class MapDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private mapsAPILoader: MapsAPILoader,
-    private nodeService: NodeService
+    private nodeService: NodeService,
+    private store: Store<any>
   ) { }
 
   ngOnInit() {
